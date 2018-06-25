@@ -6,25 +6,36 @@ import ca.bcit.net.demand.DemandAllocationResult;
 
 import java.util.List;
 
+//Define SPF as inheriting from RMSAAlgorithm
 public class SPF extends RMSAAlgorithm {
 
+    //Define getName to return the string: "SPF"
     @Override
     protected String getName() {
         return "SPF";
     }
 
+    //Define opration for public class method allocateDemand
     @Override
     public DemandAllocationResult allocateDemand(Demand demand, Network network) {
+
+        //Calculate volume as: [(input volume / 10) -1] <-- rounded up
         int volume = (int) Math.ceil(demand.getVolume() / 10) - 1;
+
+        //TODO demand.getCandidatePaths is where the SPF algorithm needs to be
+        //Get candidatePaths by calling demand.getCandidatePaths
         List<PartedPath> candidatePaths = demand.getCandidatePaths(false, network);
 
+        //Sort the candidate paths for length
         sortByLength(network, volume, candidatePaths);
 
+        //Checks for if there are no paths
         if (candidatePaths.isEmpty())
             return DemandAllocationResult.NO_SPECTRUM;
 
         boolean workingPathSuccess = false;
 
+        //Checks using demand.allocate
         try {
             for (PartedPath path : candidatePaths)
                 if (demand.allocate(network, path)) {
@@ -36,8 +47,12 @@ public class SPF extends RMSAAlgorithm {
             workingPathSuccess = false;
             return DemandAllocationResult.NO_REGENERATORS;
         }
+
+        //If previous check gives negative result
         if (!workingPathSuccess)
             return DemandAllocationResult.NO_SPECTRUM;
+
+        //Checks using demand.allocateBackup
         if (demand.allocateBackup()) {
             volume = (int) Math.ceil(demand.getSqueezedVolume() / 10) - 1;
 
@@ -54,6 +69,7 @@ public class SPF extends RMSAAlgorithm {
         return new DemandAllocationResult(demand.getWorkingPath());
     }
 
+    //Define class method for sorting and returning list of calculated candidate paths and
     private List<PartedPath> sortByLength(Network network, int volume, List<PartedPath> candidatePaths) {
         pathLoop:
         for (PartedPath path : candidatePaths) {

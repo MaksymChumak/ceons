@@ -37,7 +37,8 @@ public abstract class Demand {
 	public PartedPath getBackupPath() {
 		return backupPath;
 	}
-	
+
+	//Method getCandidatePaths for getting candidate paths for algorithm use
 	public abstract ArrayList<PartedPath> getCandidatePaths(boolean backup, Network network);
 	
 	public boolean reallocate() {
@@ -71,7 +72,7 @@ public abstract class Demand {
 	public boolean isDisjoint(Demand other) {
 		return workingPath.isDisjoint(other.workingPath);
 	}
-	
+
 	public boolean allocate(Network network, PartedPath path) {
 		if (workingPath == null)
 			if (path.allocate(this)) {
