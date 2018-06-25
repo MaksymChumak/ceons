@@ -22,8 +22,7 @@ public class SPF extends RMSAAlgorithm {
         //Calculate volume as: [(input volume / 10) -1] <-- rounded up
         int volume = (int) Math.ceil(demand.getVolume() / 10) - 1;
 
-        //TODO demand.getCandidatePaths is where the SPF algorithm needs to be
-        //Get candidatePaths by calling demand.getCandidatePaths
+        //Get candidatePaths by calling demand.getCandidatePaths, setting backup to false
         List<PartedPath> candidatePaths = demand.getCandidatePaths(false, network);
 
         //Sort the candidate paths for length

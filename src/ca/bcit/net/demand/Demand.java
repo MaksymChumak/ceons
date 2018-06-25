@@ -1,5 +1,6 @@
 package ca.bcit.net.demand;
 
+//Network and PartedPath imports
 import ca.bcit.net.Network;
 import ca.bcit.net.PartedPath;
 
@@ -39,6 +40,7 @@ public abstract class Demand {
 	}
 
 	//Method getCandidatePaths for getting candidate paths for algorithm use
+    //Define public abstract class instance of ArrayList containing PartedPath
 	public abstract ArrayList<PartedPath> getCandidatePaths(boolean backup, Network network);
 	
 	public boolean reallocate() {
